@@ -2,13 +2,30 @@ module Part1.Tasks where
 
 import Util(notImplementedYet)
 
+-- Функция унификации (унитарного преобразования), чтобы сделать область [-pi, pi)
+unify :: (Floating a, RealFrac a) => a -> a
+unify x = x - 2 * pi * (fromIntegral . round $ ( x / (2 * pi)))
+
 -- синус числа (формула Тейлора)
 mySin :: Double -> Double
-mySin = notImplementedYet
+mySin x = res
+    where
+      newX = unify x
+      -- Вычислим сумму значений, после удаления из них элементов типа NaN (не число)
+      -- take 301 - количество N, которые будем рассматривать
+      -- product - вычисление произведения всех элементов в списке ([2, 3, 4] -> 2 * 3 * 4 -> 24)
+      res = sum . filter (not . isNaN) $ take 301
+        [(((-1) ** n) * (newX ** (2 * n + 1))) / product [1..(2 * n + 1)]
+        | n <- [0..]]
 
 -- косинус числа (формула Тейлора)
 myCos :: Double -> Double
-myCos = notImplementedYet
+myCos x = res
+    where
+      newX = unify x
+      res = sum $ take 301
+        [(((-1) ** n) * (newX ** (2 * n))) / product [1..(2 * n)]
+        | n <- [0..]]
 
 -- наибольший общий делитель двух чисел
 myGCD :: Integer -> Integer -> Integer
